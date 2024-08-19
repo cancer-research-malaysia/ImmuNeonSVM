@@ -1,0 +1,55 @@
+# Compiled source
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# Logs
+*.log
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# R
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# Data files
+*.fasta
+*.fastq
+*.bam
+*.sam
+*.vcf
+*.bed
+*.gtf
+*.gff
+
+# Large binary files
+*.pdf
+*.gz
+*.zip
+
+# Temporary files
+*.tmp
+*.swp
+
+# Editor files
+.vscode/
+.idea/
+
+# Output directories
+output/
+results/
