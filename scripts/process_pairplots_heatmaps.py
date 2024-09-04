@@ -172,12 +172,14 @@ for key, df_ss in ss_logtrans_dict.items():
     if key < 10:
         pp_file = 'Pairplot_dataFrame-0' + str(key)
         hm_file = 'Heatmap_dataFrame-0' + str(key)
-        print(filename)
+        print(pp_file, hm_file)
         process_pairplots(df_ss, out_path_pairplot, pp_file, 'Batch')
         process_heatmaps(df_ss, out_path_heatmap, hm_file)
     else:
-        filename = 'Pairplot_dataFrame-' + str(key)
-        print(filename)
-        process_pairplots(df_ss, out_path_heatmap, filename, 'Batch')
+        pp_file = 'Pairplot_dataFrame-' + str(key)
+        hm_file = 'Heatmap_dataFrame-' + str(key)
+        print(pp_file, hm_file)
+        process_pairplots(df_ss, out_path_pairplot, pp_file, 'Batch')
+        process_heatmaps(df_ss, out_path_heatmap, hm_file)
 
 print('Done with plotting!')
