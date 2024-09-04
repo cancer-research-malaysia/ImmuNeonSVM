@@ -13,7 +13,7 @@ def plot_and_save(output_path, naming_var):
     try:
         yield
     finally:
-        plt.savefig(f'{output_path}/{naming_var}.pdf', dpi=300)
+        plt.savefig(f'{output_path}/{naming_var}.pdf', dpi=300, bbox_inches='tight')
         plt.close()
         gc.collect()
 
@@ -86,7 +86,9 @@ def process_heatmaps(df: pd.DataFrame, output_path: str, naming_var: str):
 
         # Removes all ticks
         hm.tick_params(left=False, bottom=False)
+        
         hm.set_title(f'{naming_var}', fontsize=16, x=0.4)
+        # plt.tight_layout(pad=1.1)
 
 
 def subset_df_by_columns(df: pd.DataFrame, num_subsets: int, x_variable: str) -> typing.DefaultDict:
@@ -165,20 +167,22 @@ len(ss_dict := subset_df_by_columns(dfd_ss, NUM_SS, 'TotalNeo_Count'))
 # X variable TotalNeo_Count should be transformed due to massive outliers
 # Apply log transformation as a map to the dictionary of dfs
 ss_logtrans_dict = {
-    key: df.assign(TotalNeo_Count=lambda x: np.log1p(x['TotalNeo_Count']))
+    #key: df.assign(TotalNeo_Count=lambda x: np.log1p(x['TotalNeo_Count']))
+    # log transform all instead of just Total Neo Count
+    key: df[['Batch']].join(df.drop('Batch', axis=1).apply(np.log1p))
     for key, df in ss_dict.items()
 }
 # now loop through the dictionary of the subset dfs, and plot the same pairplot for each, saving the plots to file
 for key, df_ss in ss_logtrans_dict.items():
     if key < 10:
-        pp_file = 'Pairplot_dataFrame-0' + str(key)
-        hm_file = 'Heatmap_dataFrame-0' + str(key)
+        pp_file = 'Pairplot_dataFrame-ALL-log-0' + str(key)
+        hm_file = 'Heatmap_dataFrame-ALL-log-0' + str(key)
         print(pp_file, hm_file)
         process_pairplots(df_ss, out_path_pairplot, pp_file, 'Batch')
         process_heatmaps(df_ss, out_path_heatmap, hm_file)
     else:
-        pp_file = 'Pairplot_dataFrame-' + str(key)
-        hm_file = 'Heatmap_dataFrame-' + str(key)
+        pp_file = 'Pairplot_dataFrame-ALL-log-' + str(key)
+        hm_file = 'Heatmap_dataFrame-ALL-log-' + str(key)
         print(pp_file, hm_file)
         process_pairplots(df_ss, out_path_pairplot, pp_file, 'Batch')
         process_heatmaps(df_ss, out_path_heatmap, hm_file)
