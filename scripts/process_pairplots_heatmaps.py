@@ -36,7 +36,7 @@ def process_pairplots(df: pd.DataFrame, output_path: str, naming_var: str, hue_c
     with plot_and_save(output_path, naming_var):
         pp = sns.pairplot(df, hue=hue_col, diag_kind="kde", kind='reg', corner=True, plot_kws={'scatter_kws': {'alpha': 0.5, 's': 10}}, palette='Set1')
         # add plot title
-        plt.suptitle(f'Log-Transformed Total Neoantigen Count vs Immune Features ({naming_var})', fontsize=20, fontweight=600)
+        plt.suptitle(f'Log-Transformed Total Neoantigen Count vs Immune Features ({naming_var})', fontsize=28, fontweight='medium')
 
         # Iterate through the axes and set bold titles
         for i, ax in enumerate(pp.axes.flat):
@@ -63,6 +63,7 @@ def process_heatmaps(df: pd.DataFrame, output_path: str, naming_var: str):
         # Create a mask for the upper triangle
         mask = np.triu(np.ones_like(corr_df, dtype=bool))
 
+        plt.figure(figsize=(12, 10))
         # Create the correlation matrix and represent it as a heatmap
         hm = sns.heatmap(corr_df, annot = True, cmap = 'coolwarm', square = True, linewidths=0.5, mask=mask, cbar_kws={"shrink": .5})
 
