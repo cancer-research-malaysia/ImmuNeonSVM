@@ -34,14 +34,31 @@ def process_pairplots(df: pd.DataFrame, output_path: str, naming_var: str, hue_c
         None
     """
     with plot_and_save(output_path, naming_var):
-        sns.pairplot(df, hue=hue_col, diag_kind="kde", kind='reg', corner=True, plot_kws={'scatter_kws': {'alpha': 0.5, 's': 10}}, palette='Set1')
+        pp = sns.pairplot(df, hue=hue_col, diag_kind="kde", kind='reg', corner=True, plot_kws={'scatter_kws': {'alpha': 0.5, 's': 10}}, palette='Set1')
         # add plot title
         plt.suptitle(f'Log-Transformed Total Neoantigen Count vs Immune Features ({naming_var})', fontsize=20, fontweight=600)
+
+        # Iterate through the axes and set bold titles
+        for i, ax in enumerate(pp.axes.flat):
+            if ax is not None:
+                if ax.get_xlabel() == "TotalNeo_Count":
+                    ax.set_xlabel(ax.get_xlabel(), fontweight='bold', fontsize=12, color='red')
+                else:
+                    ax.set_xlabel(ax.get_xlabel(), fontweight='bold', fontsize=12)
+                
+                # Handle y-axis labels (only for the leftmost column)
+                if i % pp.axes.shape[1] == 0:  # Check if it's the first column
+                    if ax.get_ylabel() == "TotalNeo_Count":
+                        ax.set_ylabel(ax.get_ylabel(), fontweight='bold', fontsize=12, color='red')
+                    else:
+                        ax.set_ylabel(ax.get_ylabel(), fontweight='bold', fontsize=12)
 
 # define a heatmap plot function
 def process_heatmaps(df: pd.DataFrame, output_path: str, naming_var: str):
     with plot_and_save(output_path, naming_var):
         corr_df = df.drop(columns='Batch').corr(method='spearman')
+        # round to 2 decimal places
+        corr_df = corr_df.round(2)
 
         # Create a mask for the upper triangle
         mask = np.triu(np.ones_like(corr_df, dtype=bool))
@@ -57,10 +74,18 @@ def process_heatmaps(df: pd.DataFrame, output_path: str, naming_var: str):
         ylabels[0].set_visible(False)
         xlabels[-1].set_visible(False)
 
+        # Rotate and align the tick labels
+        plt.setp(xlabels, rotation=45, ha='right')
+
+        # Change color of specific x-axis label
+        for label in xlabels:
+            if label.get_text() == "TotalNeo_Count":
+                label.set_color('red')  # Change color to red
+                label.set_fontweight('bold')
+
         # Removes all ticks
         hm.tick_params(left=False, bottom=False)
-
-        hm.set_title(f'{naming_var}', fontsize=14, x=0.4)
+        hm.set_title(f'{naming_var}', fontsize=16, x=0.4)
 
 
 def subset_df_by_columns(df: pd.DataFrame, num_subsets: int, x_variable: str) -> typing.DefaultDict:
