@@ -165,26 +165,36 @@ ss_cols = list(dfd_ss.columns)
 len(ss_dict := subset_df_by_columns(dfd_ss, NUM_SS, 'TotalNeo_Count'))
 
 # X variable TotalNeo_Count should be transformed due to massive outliers
-# Apply log transformation as a map to the dictionary of dfs
-ss_logtrans_dict = {
-    #key: df.assign(TotalNeo_Count=lambda x: np.log1p(x['TotalNeo_Count']))
-    # log transform all instead of just Total Neo Count
-    key: df[['Batch']].join(df.drop('Batch', axis=1).apply(np.log1p))
-    for key, df in ss_dict.items()
-}
+# Apply log transformation
+# IMPRES column is a discrete score so it does not make sense to have it log-transformed. Exclude it
+ss_logtrans_dict = {}
+
+for key, df in ss_dict.items():
+    if key == 0:
+        ss_logtrans_dict[key] = df[['Batch', 'IMPRES']].join(df.drop(['Batch', 'IMPRES'], axis=1).apply(np.log1p))
+        # switch the position of IMPRES with TotalNeo_Count columns with each other
+        col_tokeep = [col for col in ss_logtrans_dict[key].columns if col not in ['Batch', 'TotalNeo_Count', 'IMPRES']]
+        new_order = ['Batch', 'TotalNeo_Count', 'IMPRES'] + col_tokeep
+        ss_logtrans_dict[key] = ss_logtrans_dict[key][new_order]
+    else:
+        ss_logtrans_dict[key] = df[['Batch']].join(df.drop('Batch', axis=1).apply(np.log1p))
+
 # now loop through the dictionary of the subset dfs, and plot the same pairplot for each, saving the plots to file
 for key, df_ss in ss_logtrans_dict.items():
     if key < 10:
-        pp_file = 'Pairplot_dataFrame-ALL-log-0' + str(key)
-        hm_file = 'Heatmap_dataFrame-ALL-log-0' + str(key)
+        pp_file = 'Pairplot_dataFrame-logt-allxcIMPRES-0' + str(key)
+        hm_file = 'Heatmap_dataFrame-logt-allxcIMPRES-0' + str(key)
         print(pp_file, hm_file)
         process_pairplots(df_ss, out_path_pairplot, pp_file, 'Batch')
         process_heatmaps(df_ss, out_path_heatmap, hm_file)
     else:
-        pp_file = 'Pairplot_dataFrame-ALL-log-' + str(key)
-        hm_file = 'Heatmap_dataFrame-ALL-log-' + str(key)
+        pp_file = 'Pairplot_dataFrame-logt-allxcIMPRES-' + str(key)
+        hm_file = 'Heatmap_dataFrame-logt-allxcIMPRES-' + str(key)
         print(pp_file, hm_file)
         process_pairplots(df_ss, out_path_pairplot, pp_file, 'Batch')
         process_heatmaps(df_ss, out_path_heatmap, hm_file)
+
+
+
 
 print('Done with plotting!')
