@@ -19,3 +19,9 @@ MH did quite a substantial amount of EDA already on the datasets, but I am havin
 1. Test log transformation. MH ended up using Yeo-Johnson instead of log + Box-Cox. There are outliers that are still rather skew-causing (`df-01: S_Lymph_Vessels`). Additionally, there are also distributions that are rather non-normal (`df-02: S_CD8`).I might just stick with YJ transformation on all columns except `Batch` and `IMPRES` (which is a discrete, ordinal data)) + Z-score standardization.
 
 2. 
+
+### Outstanding Questions
+
+A. Is there a batch effect? *Try doing guided PCA*
+
+B. Why do we include clinical as X variables, when we can reformulate the question as "does neoantigen counts correlate with or predict clinical variables alongside cancer immune signatures"?
