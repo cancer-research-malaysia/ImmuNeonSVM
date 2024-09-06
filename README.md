@@ -14,14 +14,19 @@ MH did quite a substantial amount of EDA already on the datasets, but I am havin
 
 
 
-### My Strategy
+### Plan
 
-1. Test log transformation. MH ended up using Yeo-Johnson instead of log + Box-Cox. There are outliers that are still rather skew-causing (`df-01: S_Lymph_Vessels`). Additionally, there are also distributions that are rather non-normal (`df-02: S_CD8`).I might just stick with YJ transformation on all columns except `Batch` and `IMPRES` (which is a discrete, ordinal data)) + Z-score standardization.
+1. Test log transformation. MH ended up using Yeo-Johnson instead of log + Box-Cox. There are outliers that are still rather skew-causing (`df-01: S_Lymph_Vessels`). Additionally, there are also distributions that are rather non-normal (`df-02: S_CD8`).I might just stick with YJ transformation on all columns except `Batch` and `IMPRES` (which is a discrete, ordinal data)) (~*is Z-score standardization necessary?*~ *Centered data is required for Support Vector Regressor*)
 
-2. 
+2. Run SVR and XGBoost after feature scaling.
 
 ### Outstanding Questions
 
-A. Is there a batch effect? *Try doing guided PCA*
+A. Is there a batch effect? 
 
-B. Why do we include clinical as X variables, when we can reformulate the question as "does neoantigen counts correlate with or predict clinical variables alongside cancer immune signatures"?
+B. How to best transform categorical variables? XGBoost works with numerics only so one-hot encoding is best. SVM(R) also needs categorical variables to be encoded. 
+
+C. IMPRES is a discrete ordinal variable, what is the best way of encoding it?
+
+D. It has been postulated that centering and scaling data together prior to splitting into training and testing set will leak some information from the training to the testing set, and lead to poorer model performance. Maybe I should normalize after splitting?
+
