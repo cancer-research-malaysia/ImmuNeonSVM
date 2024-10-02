@@ -9,6 +9,7 @@ import xgboost as xgb
 import matplotlib.pyplot as plt
 
 from feature_engine.encoding import OneHotEncoder
+from feature_engine.transformation import YeoJohnsonTransformer
 
 def wrangle_raw_dataframe():
     parser = argparse.ArgumentParser(description="Run GridSearchCV on a set of X features and a set of Y labels concurrently.")
@@ -49,7 +50,7 @@ def wrangle_raw_dataframe():
     print(f"The shape of the current dataFrame is {df.shape}.")
 
     # drop fluff X features, and all NaN for now, and set col 'ID' as index
-    dfd = df.drop(columns = ['Batch', 'PAM50', 'HR_status', 'HER_status', 'AgeGroup', 'TotalNeo_Count', 'FusionTransscript_Count', 'SNVindelNeo_IC50Percentile']).dropna().set_index('ID')
+    dfd = df.drop(columns = ['Batch', 'Stage', 'PAM50', 'HR_status', 'HER_status', 'AgeGroup', 'TotalNeo_Count', 'FusionTransscript_Count', 'SNVindelNeo_IC50Percentile']).dropna().set_index('ID')
     
     print(f"Removing X features that will be excluded from the modeling...")
     print(f"The shape of the current dataFrame is {dfd.shape}.")
@@ -95,6 +96,8 @@ def wrangle_raw_dataframe():
     for i, col in enumerate(encoded_df.columns):
         dfenc.insert(insert_index + i, col, encoded_df[col])
 
+    ######## 
+    
 
 if __name__ == "__main__":
     # main()
