@@ -97,10 +97,6 @@ def wrangle_raw_dataframe():
 
 
 if __name__ == "__main__":
-    main()
+    # main()
+    pass
 
-
-
-
-# use the 202409_new_excludedIHC_batch-duplicate-removed.tsv
-df = pd.read_csv("../input-data/SA/202409_new_excludedIHC_batch-duplicate-removed.tsv",sep="\t")
