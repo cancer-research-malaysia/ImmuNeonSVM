@@ -1,6 +1,6 @@
 ## Dynamics of Neoantigens and Immune Signature Scores
 
-This repo serves to document the data analyses both what have been done by MH, and what I will do as SA. 
+This repository serves to document the data analyses both what have been done by MH, and what I will do (SA).
 
 ### Summary of Work Logs
 MH did quite a substantial amount of EDA already on the datasets, but I am having trouble figuring out where to pick up the project when they left so I have decided to note down what MH have carried out prior to my taking over.
