@@ -3,7 +3,7 @@
 This repository serves to document the data analyses both what have been done by MH, and what I will do (SA).
 
 ### Summary of Work Logs
-MH did quite a substantial amount of EDA already on the datasets, but I am having trouble figuring out where to pick up the project when they left so I have decided to note down what MH have carried out prior to my taking over.
+MH did quite a substantial amount of EDA on the datasets, but I am having trouble figuring out where to pick up the project when they left so I have decided to note down what MH have carried out prior to my taking over.
 
 #### Notes
 1. MH noticed a batch effect (~*how?*~ *apparently the immune scores in this dataset were generated via GSVA, and it might have accentuated any underlying batch effect. MH redid the analysis with ssGSEA which ameliorated the dataset*) so they added the 'Batch' label as a separate column and did all of the analyses on the separate batches.
