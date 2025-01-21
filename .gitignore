@@ -51,8 +51,6 @@ __pycache__/
 .idea/
 
 # Output directories
-nb/out-files/*
-nb/plots-regression/*
 
 
 # Specific folders
