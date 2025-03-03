@@ -38,7 +38,6 @@ __pycache__/
 *.gff
 
 # Large binary files
-*.pdf
 *.gz
 *.zip
 
@@ -49,9 +48,6 @@ __pycache__/
 # Editor files
 .vscode/
 .idea/
-
-# Output directories
-
 
 # Specific folders
 input-data/MH/NEW-ssGSEA/attempt1-mixedYSJ-beforeb1b2separateAnalysis/GSVA_code/
